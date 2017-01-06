@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool clickWalking = false;
     // private bool walking = false;
     private Vector3 currTarget;
+    private Vector3 pastTarget;
     private Vector3 meterTarget;
     private float roughness = 0.2f;
     public Vector3 bottom;
@@ -55,38 +56,62 @@ public class PlayerController : MonoBehaviour
         currentHeldItem = GetComponent<PlayerInventory>().CurrentlyEquippedTool;
         Interact();
         AdjustLayer();
-        GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        //GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        Movement();
+
+        //Debug.Log(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical"));
+        //if (transform.position != pastTarget)
+        //{
+        //    interactable.party.SetActive(false);
+        //    progressMeter.Cancel();
+        //    harvest = false;
+        //}
+
+            //Animate();
+        
+    }
+
+    void Movement()
+    {
         moveHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
         moveVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
         transform.Translate(moveHorizontal, moveVertical, 0f);
-        //Debug.Log(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical"));
-
-
-        //Animate();
-        if (clickWalking)
+        if (Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) > 0f) // Checks for manual movement.
         {
-            float step = speed * Time.deltaTime;
-            if (Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) > 0f)
+            progressMeter.Cancel();
+
+
+        }
+            if (clickWalking)
+        {
+            if (Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) > 0f) // Checks for manual movement.
             {
+                //Debug.Log("Bob");
                 clickWalking = false;
+
             }
+
+            float step = speed * Time.deltaTime;
+
             transform.position = Vector3.MoveTowards(transform.position, currTarget, step);
             //thisRigidbody.velocity = close;
             //if (Input.GetKeyDown(KeyCode.Space))
             //{
             //    thisRigidbody.velocity = Vector3.zero;
             //}
+
             if (transform.position == currTarget)
             {
                 // thisRigidbody.velocity = Vector3.zero;
                 clickWalking = false;
                 if (harvest)
                 {
+                    pastTarget = currTarget;
                     //Debug.Log("HA");
                     float mineSpeed = 0f;
                     if (interactable.primaryTool == currentHeldItem)
                     {
-                         mineSpeed = interactable.primarySpeed;
+                        mineSpeed = interactable.primarySpeed;
                     }
                     else
                     {
@@ -100,6 +125,7 @@ public class PlayerController : MonoBehaviour
                 //Debug.Log("Whoop");
             }
         }
+
     }
 
     void Interact()
@@ -134,10 +160,7 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-        if (transform.position.x - currTarget.x > 0)
-        {
-            // currTarget.x *= -1;
-        }
+
         //else
         //{
         //    Debug.Log("2");
@@ -159,70 +182,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void WalkTo(Vector2 location /* , float radius, bool destruct, GameObject what */)
+    public void WalkTo(Vector2 location)
     {
 
         currTarget = location;
-        clickWalking = true;
-
-        // Debug.Log(clickWalking);
-
-        //if (destruct == true)
+        //if (transform.position.x - currTarget.x < 0)
         //{
-        //    destroy = destruct;  
-        //    mine = what;
-        //    //radius = bound;
-        //    //currTarget.y -= radius;
+        //   currTarget.x *= -1;
         //}
-
-        //Debug.Log(position + ", " + radius);
-
+        clickWalking = true;
     }
-
-    //public void Projectile(int spawnNum)
-    //{
-
-    //    projectile = spawn[spawnNum];
-
-    //    ProjectileGO = Instantiate(projectilePrefab, projectile.position, projectile.rotation) as GameObject;
-    //    anim.SetBool("Projectile", false);
-    //}
-
-    //public void Score(int value)
-    //{
-    //    points += value;
-    //    score.text = "Score: " + points;
-    //}
-
-    //void Animate()
-    //{
-    //    if (moveHorizontal != 0 || moveVertical != 0)
-    //    {
-    //        anim.SetBool("isWalking", true);
-    //        anim.SetFloat("input_x", moveHorizontal);
-    //        anim.SetFloat("input_y", moveVertical);
-    //    }
-    //    else
-    //    {
-    //        anim.SetBool("isWalking", false);
-    //        anim.SetFloat("input_x", 0f);
-    //        anim.SetFloat("input_y", 0f);
-    //    }
-    //    if (Input.GetKeyDown(attack[0]))
-    //    {
-    //        anim.SetTrigger("Attack");
-    //        if (GetComponent<Damager>().health >= GetComponent<Damager>().initialHealth)
-    //        {
-    //            Debug.Log("GO");
-    //            anim.SetBool("Projectile", true);
-    //            anim.
-    //            Projectile();
-    //        }
-    //    }
-    //}
-
-    //void OnCollisionEnter2D(Collision2D other)
-    //{
-
-    //}
 }

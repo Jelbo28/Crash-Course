@@ -35,36 +35,38 @@ public class RadialProgressMeter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            loadingTimer = 0;
-        }
-        if (loadingTimer < loadingTime)
-        {
-            loadingTimer += Time.deltaTime;
-            toPercent = loadingTimer / loadingTime * 100f;
-            toLoad = toPercent / 100f;
-            TextIndicator.text = Mathf.Round(toPercent) + "%";
-            loadingBar.fillAmount = toLoad;
-        }
-        else if (!complete)
-        {
-
-            TextIndicator.text = "100%";
-            TextLoading.text = "Done!";
-            loadingTime = 0f;
-            Debug.Log("DOne");
-            //loadingBar.fillAmount = 0f;
-            for (int i = 0; i < images.Length; i++)
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    loadingTimer = 0;
+        //}
+            if (loadingTimer < loadingTime)
             {
-                images[i].color -= new Color(0, 0, 0, 255);
-                Debug.Log(i);
+                loadingTimer += Time.deltaTime;
+                toPercent = loadingTimer / loadingTime * 100f;
+                toLoad = toPercent / 100f;
+                TextIndicator.text = Mathf.Round(toPercent) + "%";
+                loadingBar.fillAmount = toLoad;
             }
-            complete = true;
-            Destroy(targetObject);
-            //GetComponentInChildren<Image>().color += crazyColor;
-            //go = false;
-        }
+            else if (!complete)
+            {
+
+                TextIndicator.text = "100%";
+                TextLoading.text = "Done!";
+                loadingTime = 0f;
+                Debug.Log("DOne");
+                //loadingBar.fillAmount = 0f;
+                for (int i = 0; i < images.Length; i++)
+                {
+                    images[i].color -= new Color(0, 0, 0, 255);
+                    Debug.Log(i);
+                }
+                complete = true;
+                targetObject.SetActive(false);
+                //GetComponentInChildren<Image>().color += crazyColor;
+                //go = false;
+            }
+   
+
 
 
     }
@@ -83,5 +85,20 @@ public class RadialProgressMeter : MonoBehaviour
         loadingTimer = 0f;
         complete = false;
         //go = true;
+    }
+
+    public void Cancel()
+    {
+        TextIndicator.text = "100%";
+        TextLoading.text = "Done!";
+        loadingTime = 0f;
+        Debug.Log("DOne");
+        //loadingBar.fillAmount = 0f;
+        for (int i = 0; i < images.Length; i++)
+        {
+            images[i].color -= new Color(0, 0, 0, 255);
+            Debug.Log(i);
+        }
+        complete = true;
     }
 }
