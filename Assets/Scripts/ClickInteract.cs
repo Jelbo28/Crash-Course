@@ -29,6 +29,11 @@ public class ClickInteract : MonoBehaviour
         Physics.queriesHitTriggers = true;
     }
 
+    void Update()
+    {
+        transform.LookAt(Camera.main.transform.position, -Vector3.up);
+    }
+
     void OnMouseDown()
     {
         if (Interactable)

@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.LookAt(Camera.main.transform.position, -Vector3.up);
+
         currentHeldItem = GetComponent<PlayerInventory>().CurrentlyEquippedTool;
         Interact();
         AdjustLayer();
