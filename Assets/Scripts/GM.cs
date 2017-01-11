@@ -14,6 +14,10 @@ public class GM : MonoBehaviour
 
     public static GM instance = null;
     private float dayTimer;
+    [SerializeField]
+     Color moonColor;
+    [SerializeField]
+     Color sunColor;
     public GameObject currHighlight;
     private Light sun;
 
@@ -28,13 +32,14 @@ public class GM : MonoBehaviour
 
     void Start()
     {
-        dayTimer = dayLength / 2;
+        dayTimer = dayLength/2;
         sun = GameObject.Find("Sunlight").GetComponent<Light>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(dayTimer);
         DayNight();
     }
 
@@ -56,10 +61,18 @@ public class GM : MonoBehaviour
     void DayNight()
     {
         dayTimer -= Time.deltaTime;
-        if (dayTimer <= 0)
+        if (dayTimer <= 12)
         {
-            dayTimer = dayLength;
+
+                sun.color = Color.Lerp(sun.color, moonColor, Time.deltaTime);
+
+            
+            if (dayTimer < 0)
+            {
+                sun.color = sunColor;
+                dayTimer = dayLength;
+            }
         }
-        sun.intensity = Mathf.Pow(((2 * dayTimer / dayLength) - 1), sunPower) * -1 + 1;
+        sun.intensity = Mathf.Pow(((2 * dayTimer / dayLength) - 1), sunPower) * -1 + .8f;
     }
 }
