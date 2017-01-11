@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private WorldObject interactable;
     //private float bound;
     //public int damageInflcited = 0;
+    private bool currMining = false;
     private string currentHeldItem;
 
     // Use this for initialization
@@ -53,8 +54,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(Camera.main.transform.position, -Vector3.up);
-
+        //transform.LookAt(Camera.main.transform.position, -Vector3.up);
+        Debug.Log(currMining);
         currentHeldItem = GetComponent<PlayerInventory>().CurrentlyEquippedTool;
         Interact();
         AdjustLayer();
@@ -77,23 +78,20 @@ public class PlayerController : MonoBehaviour
     {
         moveHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
         moveVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-        transform.Translate(moveHorizontal, moveVertical, 0f);
-        if (Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) > 0f) // Checks for manual movement.
+
+       // Debug.Log(clickWalking);
+
+        //if () // Checks for manual movement.
+        //{
+        //    progressMeter.Cancel();
+        //    clickWalking = false;
+
+        //}
+        if (clickWalking == true && Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) <= 0f)
         {
-            progressMeter.Cancel();
-
-
-        }
-            if (clickWalking)
-        {
-            if (Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) > 0f) // Checks for manual movement.
-            {
-                //Debug.Log("Bob");
-                clickWalking = false;
-
-            }
 
             float step = speed * Time.deltaTime;
+
 
             transform.position = Vector3.MoveTowards(transform.position, currTarget, step);
             //thisRigidbody.velocity = close;
@@ -108,6 +106,7 @@ public class PlayerController : MonoBehaviour
                 clickWalking = false;
                 if (harvest)
                 {
+                    currMining = true;
                     pastTarget = currTarget;
                     //Debug.Log("HA");
                     float mineSpeed = 0f;
@@ -120,12 +119,26 @@ public class PlayerController : MonoBehaviour
                         mineSpeed = interactable.defaultSpeed;
                     }
                     //mineSpeed *= currentHeldItem.level; This would multiply it based on your tool's level (wood, iron, diamond)
-                    progressMeter.Activate(mineSpeed, interactable.gameObject);
-                    interactable.party.SetActive(true);
+                    progressMeter.Activate(mineSpeed, interactable);
+                    interactable.Mine(mineSpeed);
+                    //interactable.party.SetActive(true);
                     harvest = false;
                 }
+
                 //Debug.Log("Whoop");
             }
+        }
+        else if (Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) > 0f)
+        {
+            clickWalking = false;
+            transform.Translate(moveHorizontal, moveVertical, 0f);
+            if (currMining)
+            {
+                progressMeter.Cancel();
+                interactable.Cancel();
+                currMining = false;
+            }
+
         }
 
     }
@@ -134,8 +147,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && GM.instance.currHighlight.name != "Nothing")
         {
-            Debug.Log("Wha?");
-            Debug.Log(GM.instance.currHighlight.name);
+            //Debug.Log("Wha?");
+            //Debug.Log(GM.instance.currHighlight.name);
             interactable = GM.instance.currHighlight.GetComponent<WorldObject>();
             switch (currentHeldItem)
             {

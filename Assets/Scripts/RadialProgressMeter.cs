@@ -14,7 +14,7 @@ public class RadialProgressMeter : MonoBehaviour
     [SerializeField]
     float loadingTime;
 
-    private GameObject targetObject;
+    private WorldObject targetObject;
     private float loadingTimer;
     private float toPercent;
     private float toLoad;
@@ -53,15 +53,20 @@ public class RadialProgressMeter : MonoBehaviour
                 TextIndicator.text = "100%";
                 TextLoading.text = "Done!";
                 loadingTime = 0f;
-                Debug.Log("DOne");
-                //loadingBar.fillAmount = 0f;
-                for (int i = 0; i < images.Length; i++)
+                //Debug.Log(targetObject.name);
+
+                //targetObject.mineSuccess = targetObject.mineSuccess + 1;
+
+            //Debug.Log(targetObject.GetComponent<WorldObject>().mineSuccess);
+         
+            //loadingBar.fillAmount = 0f;
+            for (int i = 0; i < images.Length; i++)
                 {
-                    images[i].color -= new Color(0, 0, 0, 255);
-                    Debug.Log(i);
+                images[i].enabled = false;
+                //Debug.Log(i);
                 }
                 complete = true;
-                targetObject.SetActive(false);
+                targetObject.gameObject.SetActive(false);
                 //GetComponentInChildren<Image>().color += crazyColor;
                 //go = false;
             }
@@ -71,13 +76,13 @@ public class RadialProgressMeter : MonoBehaviour
 
     }
 
-    public void Activate(float loadTime, GameObject target)
+    public void Activate(float loadTime, WorldObject target)
     {
         targetObject = target;
         GetComponentInParent<Transform>().position = target.transform.position;
         for (int i = 0; i < images.Length; i++)
         {
-            images[i].color += new Color(0, 0, 0, 255);
+            images[i].enabled = true;
         }
         //images[1].color -= crazyColor;
         //images[2].color -= crazyColor;
@@ -92,12 +97,12 @@ public class RadialProgressMeter : MonoBehaviour
         TextIndicator.text = "100%";
         TextLoading.text = "Done!";
         loadingTime = 0f;
-        Debug.Log("DOne");
+       // Debug.Log("DOne");
         //loadingBar.fillAmount = 0f;
         for (int i = 0; i < images.Length; i++)
         {
-            images[i].color -= new Color(0, 0, 0, 255);
-            Debug.Log(i);
+            images[i].enabled = false;
+            //Debug.Log(i);
         }
         complete = true;
     }

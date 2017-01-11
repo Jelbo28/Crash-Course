@@ -5,6 +5,8 @@ using UnityEngine;
 public class WorldObject : MonoBehaviour
 {
     [SerializeField]
+    GameObject particles;
+    [SerializeField]
     float radius = 1f;
     [SerializeField]
     public bool harvestable = true; // requires player.heldItem to be hands
@@ -14,17 +16,30 @@ public class WorldObject : MonoBehaviour
     public bool minable = false; // requires player.heldItem to be picaxe tool
 
     public Vector3 location;
-    [SerializeField]
     public GameObject party;
     public string primaryTool = "Axe";
+    //  public int mineSuccess;
+    // public int mineSpeed;
+    // public bool mineStart;
     public int primarySpeed = 1;
     public int defaultSpeed = 3;
 
     void Awake()
     {
         location = GetComponent<ClickInteract>().standLocation.transform.position;
-        Debug.Log(location);
+        //Debug.Log(location);
         SetSpriteLayer();
+    }
+
+
+   public void Mine(float mineSpeed)
+    {
+        party = Instantiate(particles, transform.position, Quaternion.identity) as GameObject;
+        Destroy(party, mineSpeed);
+    }
+    public void Cancel()
+    {
+        Destroy(party);
     }
 
     void SetSpriteLayer()

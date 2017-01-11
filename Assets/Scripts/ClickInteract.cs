@@ -31,7 +31,7 @@ public class ClickInteract : MonoBehaviour
 
     void Update()
     {
-        transform.LookAt(Camera.main.transform.position, -Vector3.up);
+        //transform.LookAt(Camera.main.transform.position, -Vector3.up);
     }
 
     void OnMouseDown()
@@ -42,7 +42,7 @@ public class ClickInteract : MonoBehaviour
         }
         else /* if (tag == "Ground") */
         {
-            Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+           // Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             player.GetComponent<PlayerController>().WalkTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
     }
