@@ -16,7 +16,6 @@ public class WorldObject : MonoBehaviour
     public bool minable = false; // requires player.heldItem to be picaxe tool
 
     public Vector3 location;
-    public GameObject party;
     public string primaryTool = "Axe";
     //  public int mineSuccess;
     // public int mineSpeed;
@@ -32,14 +31,23 @@ public class WorldObject : MonoBehaviour
     }
 
 
+    void Update()
+    {
+
+    }
+
    public void Mine(float mineSpeed)
     {
-        party = Instantiate(particles, transform.position, Quaternion.identity) as GameObject;
-        Destroy(party, mineSpeed);
+        particles = Instantiate(particles, transform.position, Quaternion.identity) as GameObject;
+        particles.transform.SetParent(gameObject.transform);
+        particles.GetComponent<ParticleSystem>().
+       //Destroy(gameObject, mineSpeed);
     }
     public void Cancel()
     {
-        Destroy(party);
+        Debug.Log("bob");
+        CancelInvoke();
+        particles.SetActive(false);
     }
 
     void SetSpriteLayer()

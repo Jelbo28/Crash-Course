@@ -5,10 +5,7 @@ using UnityEngine;
 public class ObjectIdentifier : MonoBehaviour
 {
 
-    void OnMouseOver()
-    {
 
-        GM.instance.ItemDisplay(gameObject);
 
-    }
+
 }

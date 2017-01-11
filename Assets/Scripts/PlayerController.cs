@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool clickWalking = false;
     // private bool walking = false;
     private Vector3 currTarget;
-    private Vector3 pastTarget;
+    private Vector3 mineTarget;
     private Vector3 meterTarget;
     private float roughness = 0.2f;
     public Vector3 bottom;
@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     //public int damageInflcited = 0;
     private bool currMining = false;
     private string currentHeldItem;
+    private Light faceLight;
+    private float mineSpeed = 0f;
 
     // Use this for initialization
     //   void Start ()
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         bottom = new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<BoxCollider2D>().bounds.extents.y);
+        faceLight = GetComponentInChildren<Light>();
         //thisRigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -54,14 +57,19 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(currMining);
         //transform.LookAt(Camera.main.transform.position, -Vector3.up);
-        Debug.Log(currMining);
+        //Debug.Log(clickWalking);
+        //Debug.Log(currMining);
         currentHeldItem = GetComponent<PlayerInventory>().CurrentlyEquippedTool;
         Interact();
         AdjustLayer();
         //GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         Movement();
-
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            faceLight.enabled = !faceLight.enabled;
+        }
         //Debug.Log(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical"));
         //if (transform.position != pastTarget)
         //{
@@ -79,7 +87,7 @@ public class PlayerController : MonoBehaviour
         moveHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
         moveVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
 
-       // Debug.Log(clickWalking);
+        // Debug.Log(clickWalking);
 
         //if () // Checks for manual movement.
         //{
@@ -87,9 +95,27 @@ public class PlayerController : MonoBehaviour
         //    clickWalking = false;
 
         //}
-        if (clickWalking == true && Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) <= 0f)
+        if (moveHorizontal != 0 || moveVertical != 0)
         {
+            clickWalking = false;
+            transform.Translate(moveHorizontal, moveVertical, 0f);
+            if (currMining)
+            {
+                progressMeter.Cancel();
+                interactable.Cancel();
+                currMining = false;
+            }
 
+        }
+        else if (clickWalking == true)
+        {
+            if (currMining)
+            {
+                progressMeter.Cancel();
+                interactable.Cancel();
+                currMining = false;
+
+            }
             float step = speed * Time.deltaTime;
 
 
@@ -104,12 +130,10 @@ public class PlayerController : MonoBehaviour
             {
                 // thisRigidbody.velocity = Vector3.zero;
                 clickWalking = false;
-                if (harvest)
+                if (currTarget == mineTarget)
                 {
                     currMining = true;
-                    pastTarget = currTarget;
                     //Debug.Log("HA");
-                    float mineSpeed = 0f;
                     if (interactable.primaryTool == currentHeldItem)
                     {
                         mineSpeed = interactable.primarySpeed;
@@ -125,27 +149,17 @@ public class PlayerController : MonoBehaviour
                     harvest = false;
                 }
 
+
                 //Debug.Log("Whoop");
             }
         }
-        else if (Mathf.Abs(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) > 0f)
-        {
-            clickWalking = false;
-            transform.Translate(moveHorizontal, moveVertical, 0f);
-            if (currMining)
-            {
-                progressMeter.Cancel();
-                interactable.Cancel();
-                currMining = false;
-            }
 
-        }
 
     }
 
-    void Interact()
+     void Interact()
     {
-        if (Input.GetMouseButtonDown(1) && GM.instance.currHighlight.name != "Nothing")
+        if (Input.GetMouseButtonDown(1) && GM.instance.currHighlight.tag == "Interactable")
         {
             //Debug.Log("Wha?");
             //Debug.Log(GM.instance.currHighlight.name);
@@ -156,6 +170,7 @@ public class PlayerController : MonoBehaviour
                     if (interactable.harvestable)
                     {
                         //meterTarget = interactable.transform.position;
+                        mineTarget = interactable.location;
                         currTarget = interactable.location;
                         clickWalking = true;
                         harvest = true;
@@ -193,7 +208,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.tag == "Biome")
         {
-            Debug.Log(other.name);
+            //Debug.Log(other.name);
         }
     }
 

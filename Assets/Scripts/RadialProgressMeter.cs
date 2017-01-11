@@ -19,6 +19,7 @@ public class RadialProgressMeter : MonoBehaviour
     private float toPercent;
     private float toLoad;
     private bool complete;
+    private bool asleep = true;
     //private Color crazyColor = new Color(0f, 0f, 0f, -1f);
     [SerializeField]
     private Image[] images;
@@ -35,6 +36,7 @@ public class RadialProgressMeter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(loadingTimer);
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
         //    loadingTimer = 0;
@@ -47,13 +49,13 @@ public class RadialProgressMeter : MonoBehaviour
                 TextIndicator.text = Mathf.Round(toPercent) + "%";
                 loadingBar.fillAmount = toLoad;
             }
-            else if (!complete)
+            else if (loadingTimer >= loadingTime && complete == false)
             {
 
                 TextIndicator.text = "100%";
                 TextLoading.text = "Done!";
                 loadingTime = 0f;
-                //Debug.Log(targetObject.name);
+
 
                 //targetObject.mineSuccess = targetObject.mineSuccess + 1;
 
@@ -65,11 +67,16 @@ public class RadialProgressMeter : MonoBehaviour
                 images[i].enabled = false;
                 //Debug.Log(i);
                 }
-                complete = true;
+            if (!asleep)
+            {
+                Debug.Log(targetObject.name);
                 targetObject.gameObject.SetActive(false);
-                //GetComponentInChildren<Image>().color += crazyColor;
-                //go = false;
             }
+
+            complete = true;
+            //GetComponentInChildren<Image>().color += crazyColor;
+            //go = false;
+        }
    
 
 
@@ -78,6 +85,11 @@ public class RadialProgressMeter : MonoBehaviour
 
     public void Activate(float loadTime, WorldObject target)
     {
+        if (asleep)
+        {
+            asleep = false;
+
+        }
         targetObject = target;
         GetComponentInParent<Transform>().position = target.transform.position;
         for (int i = 0; i < images.Length; i++)
@@ -94,6 +106,7 @@ public class RadialProgressMeter : MonoBehaviour
 
     public void Cancel()
     {
+        Debug.Log("Whyy");
         TextIndicator.text = "100%";
         TextLoading.text = "Done!";
         loadingTime = 0f;

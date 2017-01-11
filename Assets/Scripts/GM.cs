@@ -39,21 +39,30 @@ public class GM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(dayTimer);
+        //Debug.Log(dayTimer);
         DayNight();
     }
 
     public void ItemDisplay(GameObject thing /*, int itemType */)
     {
-        if (thing.name != "Nothing")
+        //Debug.Log(thing.name);
+        if (thing.tag == "Interactable")
         {
-            itemDisplay.text = thing.name;
+            if (thing.name != "Nothing")
+            {
+                itemDisplay.text = thing.name;
+            }
+            else
+            {
+                itemDisplay.text = " ";
+            }
+            currHighlight = thing;
         }
         else
         {
-            itemDisplay.text = " ";
+            Debug.Log("poop");
         }
-        currHighlight = thing;
+
 
 
     }

@@ -34,6 +34,13 @@ public class ClickInteract : MonoBehaviour
         //transform.LookAt(Camera.main.transform.position, -Vector3.up);
     }
 
+    void OnMouseOver()
+    {
+
+        GM.instance.ItemDisplay(gameObject);
+
+    }
+
     void OnMouseDown()
     {
         if (Interactable)
