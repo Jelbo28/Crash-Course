@@ -40,12 +40,12 @@ public class WorldObject : MonoBehaviour
     {
         particles = Instantiate(particles, transform.position, Quaternion.identity) as GameObject;
         particles.transform.SetParent(gameObject.transform);
-        particles.GetComponent<ParticleSystem>().
+        //particles.GetComponent<ParticleSystem>().
        //Destroy(gameObject, mineSpeed);
     }
     public void Cancel()
     {
-        Debug.Log("bob");
+        //Debug.Log("bob");
         CancelInvoke();
         particles.SetActive(false);
     }

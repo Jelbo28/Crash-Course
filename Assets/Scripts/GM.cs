@@ -60,7 +60,7 @@ public class GM : MonoBehaviour
         }
         else
         {
-            Debug.Log("poop");
+            //Debug.Log("poop");
         }
 
 
