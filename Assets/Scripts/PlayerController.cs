@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
             clickWalking = false; // while moving with the keyboard, you can't click and walk
             transform.Translate(moveHorizontal, moveVertical, 0f); // Moves player manually
             currTarget = transform.position; // Sets target area to whereever the player is.
+            //moving = false;
         }
         else if (clickWalking == true) // Checks if the player should be going to click location
         {
@@ -75,8 +76,9 @@ public class PlayerController : MonoBehaviour
 
             if (transform.position == currTarget) // Waits for the player to get to their target location.
             {
-                clickWalking = false; // turns off walking once there
-                if (harvest) // checks to see if it should be mining the object.
+                clickWalking = false;
+                moving = false;// turns off walking once there
+                if (harvest && currMining == false) // checks to see if it should be mining the object.
                 {
                     currMining = true; // tells script that it has begun mining something.
                     Debug.Log("HA");

@@ -82,17 +82,18 @@ public class RadialProgressMeter : MonoBehaviour
 
     public void Cancel()
     {
-    //    //Debug.Log("Whyy");
-    //    TextIndicator.text = "100%";
-    //    TextLoading.text = "Done!";
-    //    loadingTime = 0f;
-    //    // Debug.Log("DOne");
-    //    //loadingBar.fillAmount = 0f;
-    //    for (int i = 0; i < images.Length; i++)
-    //    {
-    //        images[i].enabled = false;
-    //        //Debug.Log(i);
-    //    }
-    //    complete = true;
+        Debug.Log("Whyy");
+        asleep = true;
+        TextIndicator.text = "100%";
+        TextLoading.text = "Done!";
+        loadingTime = 0f;
+        // Debug.Log("DOne");
+        //loadingBar.fillAmount = 0f;
+        for (int i = 0; i < images.Length; i++)
+        {
+            images[i].enabled = false;
+            //Debug.Log(i);
+        }
+        complete = true;
     }
 }
