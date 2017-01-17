@@ -4,47 +4,102 @@ using UnityEngine;
 
 public class DayCycle : MonoBehaviour
 {
-    private float dayTimer;
     [SerializeField]
-    Color moonColor;
+    Color darkColor;
     [SerializeField]
-    Color sunColor;
+    Color twilightColor;
     [SerializeField]
-    int dayLength;
+    Color lightColor;
     [SerializeField]
-    int sunPower = 2;
+    float transitionLength;
+    [SerializeField]
+    float dayLength;
+    //[SerializeField]
+    //int sunPower = 2;
+
+    [SerializeField]
+    float dayTimeRatio = 1/2;
+    [SerializeField]
+    float eveningTimeRatio = 1/4;
+    [SerializeField]
+    float nightTimeRatio = 1/4;
 
     private Light sun;
+    private float dayTimer;
+    private float eveningTimer;
+    private float nightTimer;
+    private bool toggle;
+    private float origDayLength;
+
 
     void Start()
     {
-        dayTimer = dayLength / 2;
+        //Configures the ammount of time (in seconds) each part of the day gets.
+        dayTimer = dayLength * dayTimeRatio;
+        eveningTimer = dayLength * eveningTimeRatio;
+        nightTimer = dayLength * nightTimeRatio;
+        origDayLength = dayLength;
+        //Configures light component for later use.
         sun = GetComponent<Light>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(dayTimer);
-        DayNight();
-    }
 
+        dayLength -= Time.deltaTime;
 
-    void DayNight()
-    {
-        dayTimer -= Time.deltaTime;
-        if (dayTimer <= 12)
+        //dayTimer -= Time.deltaTime;
+        if (toggle)
         {
-
-            sun.color = Color.Lerp(sun.color, moonColor, Time.deltaTime);
-
-
-            if (dayTimer < 0)
+            StartCoroutine(ColorChange(lightColor, transitionLength));
+            toggle = !toggle;
+        }
+        if (dayLength <= eveningTimer + nightTimer)
+        {
+            //eveningTimer -= Time.deltaTime;
+            if (!toggle)
             {
-                sun.color = sunColor;
-                dayTimer = dayLength;
+                StartCoroutine(ColorChange(twilightColor, transitionLength));
+                toggle = !toggle;
+            }
+            if (dayLength <= nightTimer)
+            {
+                //nightTimer -= Time.deltaTime;
+                if (toggle)
+                {
+                    StartCoroutine(ColorChange(darkColor, transitionLength));
+                    toggle = !toggle;
+                }
+                if (dayLength <= 3)
+                {
+                    if (toggle)
+                    {
+                        StartCoroutine(ColorChange(lightColor, transitionLength));
+                        toggle = !toggle;
+                    }
+                    if (dayLength <= 0)
+                    {
+                        dayLength = origDayLength;
+
+                    }
+                    //sun.color = sunColor;
+                    //dayTimer = dayLength * dayTimeRatio;
+                    //eveningTimer = dayLength * eveningTimeRatio;
+                    //nightTimer = dayLength * nightTimeRatio;
+                }
             }
         }
-        sun.intensity = Mathf.Pow(((2 * dayTimer / dayLength) - 1), sunPower) * -1 + .8f;
+        //sun.intensity = Mathf.Pow(((2 * dayTimer / dayLength) - 1), sunPower) * -1 + .8f;
+    }
+
+    IEnumerator ColorChange(Color color, float time)
+    {
+        float step = time * 1 / 60;
+        for (int i = 0; i < 60; i++)
+        {
+            yield return new WaitForSeconds(1 / 60f);
+            sun.color = Color.Lerp(sun.color, color, step);
+        }
     }
 }
