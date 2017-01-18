@@ -28,7 +28,7 @@ public class DayCycle : MonoBehaviour
     private float dayTimer;
     private float eveningTimer;
     private float nightTimer;
-    private bool toggle;
+    private bool toggle = true;
     private float origDayLength;
 
 
@@ -73,7 +73,7 @@ public class DayCycle : MonoBehaviour
                 }
                 if (dayLength <= 3)
                 {
-                    if (toggle)
+                    if (!toggle)
                     {
                         StartCoroutine(ColorChange(lightColor, transitionLength));
                         toggle = !toggle;
@@ -95,11 +95,13 @@ public class DayCycle : MonoBehaviour
 
     IEnumerator ColorChange(Color color, float time)
     {
-        float step = time * 1 / 60;
-        for (int i = 0; i < 60; i++)
+        float step = time * 1 / 60f;
+        while (time >= 0) //  Make this not instantanious.
         {
-            yield return new WaitForSeconds(1 / 60f);
+            time -= step;
+            //yield return new WaitForSeconds(1 / 60f);
             sun.color = Color.Lerp(sun.color, color, step);
         }
+        yield return null;
     }
 }

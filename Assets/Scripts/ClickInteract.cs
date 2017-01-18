@@ -21,7 +21,8 @@ public class ClickInteract : MonoBehaviour
     void Awake()
     {
         // We can also avoid calculating where the bottom of the sprite is by just setting it as the pivot point.
-        //standLocation =  new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<BoxCollider2D>().bounds.extents.y, transform.position.z);
+       //standLocation =  new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<BoxCollider2D>().bounds.extents.y, transform.position.z);
+       //standLocation = new
     }
 
     void Start()

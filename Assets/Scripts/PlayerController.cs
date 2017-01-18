@@ -38,11 +38,17 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log(moving);
         Interact();
-        AdjustLayer();
+        //AdjustLayer();
         Movement();
         Flashlight();
 
     }
+    void LateUpdate()
+    {
+
+        GetComponent<SpriteRenderer>().sortingOrder = (int)Camera.main.WorldToScreenPoint(GetComponent<SpriteRenderer>().bounds.min).y * -1;
+    }
+
 
     void Flashlight()
     {

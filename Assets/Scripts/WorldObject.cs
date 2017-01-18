@@ -27,7 +27,7 @@ public class WorldObject : MonoBehaviour
     {
         location = GetComponent<ClickInteract>().standLocation.transform.position;
         //Debug.Log(location);
-        SetSpriteLayer();
+        //SetSpriteLayer();
     }
 
 
@@ -36,7 +36,14 @@ public class WorldObject : MonoBehaviour
 
     }
 
-   public void Mine(float mineSpeed)
+    void LateUpdate()
+    {
+
+        GetComponent<SpriteRenderer>().sortingOrder = (int)Camera.main.WorldToScreenPoint(GetComponent<SpriteRenderer>().bounds.min).y * -1;
+    }
+
+
+    public void Mine(float mineSpeed)
     {
         particles = Instantiate(particles, transform.position, Quaternion.identity) as GameObject;
         particles.transform.SetParent(gameObject.transform);
