@@ -23,17 +23,26 @@ public class DayCycle : MonoBehaviour
     float eveningTimeRatio = 1/4;
     [SerializeField]
     float nightTimeRatio = 1/4;
+    [SerializeField]
+    bool on = false;
 
     private Light sun;
     private float dayTimer;
     private float eveningTimer;
     private float nightTimer;
-    private bool toggle = true;
+    //private bool toggle = true;
+    private int dayPeriod = 0;
     private float origDayLength;
+    private bool colorChange = false;
+    private Color newColor;
+    private Color currColor;
+    private float t = 0f;
 
 
     void Start()
     {
+        dayPeriod = 0;
+        newColor = lightColor;
         //Configures the ammount of time (in seconds) each part of the day gets.
         dayTimer = dayLength * dayTimeRatio;
         eveningTimer = dayLength * eveningTimeRatio;
@@ -46,62 +55,86 @@ public class DayCycle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        dayLength -= Time.deltaTime;
-
-        //dayTimer -= Time.deltaTime;
-        if (toggle)
+        Debug.Log(dayPeriod);
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            StartCoroutine(ColorChange(lightColor, transitionLength));
-            toggle = !toggle;
+            newColor = twilightColor;
+            currColor = sun.color;
+            colorChange = true;
+        }
+        if (on)
+        {
+            Day();
+        }
+        if (colorChange == true)
+        {
+            ColorChange();
+        }
+    }
+
+    void Day()
+    {
+        dayLength -= Time.deltaTime;
+        if (dayPeriod == 0)
+        {
+            newColor= lightColor;
+            currColor = sun.color;
+            colorChange = true;
+            dayPeriod++;
         }
         if (dayLength <= eveningTimer + nightTimer)
         {
-            //eveningTimer -= Time.deltaTime;
-            if (!toggle)
+            if (dayPeriod == 1)
             {
-                StartCoroutine(ColorChange(twilightColor, transitionLength));
-                toggle = !toggle;
+                Debug.Log("bob");
+                newColor = twilightColor;
+                currColor = sun.color;
+                colorChange = true;
+                dayPeriod++;
             }
             if (dayLength <= nightTimer)
             {
-                //nightTimer -= Time.deltaTime;
-                if (toggle)
+                if (dayPeriod == 2)
                 {
-                    StartCoroutine(ColorChange(darkColor, transitionLength));
-                    toggle = !toggle;
+                   newColor = darkColor;
+                    currColor = sun.color;
+                    colorChange = true;
+                    dayPeriod++;
                 }
                 if (dayLength <= 3)
                 {
-                    if (!toggle)
+                    if (dayPeriod == 3)
                     {
-                        StartCoroutine(ColorChange(lightColor, transitionLength));
-                        toggle = !toggle;
+                        newColor= lightColor;
+                        currColor = sun.color;
+                        colorChange = true;
+                        dayPeriod++;
                     }
                     if (dayLength <= 0)
                     {
                         dayLength = origDayLength;
-
+                        dayPeriod = 0;
                     }
-                    //sun.color = sunColor;
-                    //dayTimer = dayLength * dayTimeRatio;
-                    //eveningTimer = dayLength * eveningTimeRatio;
-                    //nightTimer = dayLength * nightTimeRatio;
                 }
             }
         }
         //sun.intensity = Mathf.Pow(((2 * dayTimer / dayLength) - 1), sunPower) * -1 + .8f;
     }
 
-    IEnumerator ColorChange(Color color, float time)
+    void ColorChange()
     {
-        float step = time * 1 / 60f;
-        while (time >= 0) //  Make this not instantanious.
-        {
-            time -= step;
-            //yield return new WaitForSeconds(1 / 60f);
-            sun.color = Color.Lerp(sun.color, color, step);
-        }
-        yield return null;
+        Debug.Log("going...");
+            sun.color = Color.Lerp(currColor, newColor, t);
+            if (t < 1)
+            { // while t is below the end limit...
+              // increment it at the desired rate every update:
+                t += Time.deltaTime / transitionLength;
+            Debug.Log("T = " + t);
+            }
+            else
+            {
+            t = 0;
+                colorChange = false; // turns off color changing for now.
+            }
     }
 }
