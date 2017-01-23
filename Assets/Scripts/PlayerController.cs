@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     float speed; // Designated movement speed for the player
     [SerializeField]
     RadialProgressMeter progressMeter; // The progress meter
+    [SerializeField]
+    GameObject flashlight;
 
     public Vector2 bottom; // Bottom/middle of the player's sprite
 
@@ -24,14 +26,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 currTarget; // Where the player wants to be
     private WorldObject interactable; // Whatever object the player currently interacts with
     private string currentHeldItem; // The player's currently equipped item (will be changedwhen I have an inventory)
-    private Light faceLight; // Flashlight attached to the player, child
+    //private Light faceLight; // Flashlight attached to the player, child
     #endregion
 
     void Awake()
     {
         bottom = new Vector2(transform.position.x, transform.position.y - gameObject.GetComponent<BoxCollider2D>().bounds.extents.y); // calculates the bottom middle of the player's sprite
         currentHeldItem = GetComponent<PlayerInventory>().CurrentlyEquippedTool; // Gets equipped item from inventory
-        faceLight = GetComponentInChildren<Light>();
+        //faceLight = GetComponentInChildren<Light>();
     }
 
     void Update()
@@ -54,7 +56,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            faceLight.enabled = !faceLight.enabled;
+            flashlight.SetActive(!flashlight.active);
         }
     }
 
