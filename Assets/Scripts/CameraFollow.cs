@@ -7,14 +7,14 @@ public class CameraFollow : MonoBehaviour
     public Transform target;
     [SerializeField]
     float m_speed = 0.1f;
-    Camera mycam;
+    //Camera mycam;
 
-    // Use this for initialization
-    void Start()
-    {
-        mycam = GetComponent<Camera>();
+    //// Use this for initialization
+    //void Start()
+    //{
+    //    mycam = GetComponent<Camera>();
 
-    }
+    //}
 
     // Update is called once per frame
     void Update()

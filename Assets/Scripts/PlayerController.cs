@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private bool harvest = false;
 
     private Vector3 currTarget; // Where the player wants to be
+    private Vector3 mineTarget;
     private WorldObject interactable; // Whatever object the player currently interacts with
     private string currentHeldItem; // The player's currently equipped item (will be changedwhen I have an inventory)
     //private Light faceLight; // Flashlight attached to the player, child
@@ -38,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(moving);
+        //Debug.Log(moving);
         Interact();
         //AdjustLayer();
         Movement();
@@ -56,7 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            flashlight.SetActive(!flashlight.active);
+            flashlight.SetActive(!flashlight.activeSelf);
         }
     }
 
@@ -86,10 +87,10 @@ public class PlayerController : MonoBehaviour
             {
                 clickWalking = false;
                 moving = false;// turns off walking once there
-                if (harvest && currMining == false) // checks to see if it should be mining the object.
+                if (harvest && currMining == false && transform.position == mineTarget) // checks to see if it should be mining the object.
                 {
                     currMining = true; // tells script that it has begun mining something.
-                    Debug.Log("HA");
+                    //Debug.Log("HA");
                     if (interactable.primaryTool == currentHeldItem) // Checks to see if the players item is the right tool type to harvest the object, if not the spped will be slower.
                     {
                         mineSpeed = interactable.primarySpeed;
@@ -132,7 +133,8 @@ public class PlayerController : MonoBehaviour
                 case "Hands":
                     if (interactable.harvestable) //Checks if this item will work with the object
                     {
-                        WalkTo(interactable.location); // Makes the player walk to the mining location.
+                        mineTarget = interactable.location;
+                        WalkTo(mineTarget); // Makes the player walk to the mining location.
                         harvest = true; // Sets mining to true
                     }
                     break;
@@ -145,13 +147,13 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 default:
-                    Debug.Log("Item equipped not compatable with world object!");
+                    //Debug.Log("Item equipped not compatable with world object!");
                     break;
             }
         }
         else
         {
-            Debug.Log("Nothing highlighted");
+            //Debug.Log("Nothing highlighted");
         }
     }
 

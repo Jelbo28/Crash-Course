@@ -55,7 +55,7 @@ public class DayCycle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(dayPeriod);
+        //Debug.Log(dayPeriod);
         if (Input.GetKeyDown(KeyCode.Q))
         {
             newColor = twilightColor;
@@ -123,13 +123,13 @@ public class DayCycle : MonoBehaviour
 
     void ColorChange()
     {
-        Debug.Log("going...");
+        //Debug.Log("going...");
             sun.color = Color.Lerp(currColor, newColor, t);
             if (t < 1)
             { // while t is below the end limit...
               // increment it at the desired rate every update:
                 t += Time.deltaTime / transitionLength;
-            Debug.Log("T = " + t);
+           // Debug.Log("T = " + t);
             }
             else
             {

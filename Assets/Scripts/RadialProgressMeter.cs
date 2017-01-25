@@ -71,13 +71,13 @@ public class RadialProgressMeter : MonoBehaviour
         GetComponentInParent<Transform>().position = target.transform.position;
         for (int i = 0; i < images.Length; i++)
         {
-            Debug.Log(i);
+            //Debug.Log(i);
             images[i].enabled = true;
         }
         loadingTime = loadTime;
         loadingTimer = 0f;
         complete = false;
-        Debug.Log("Ready");
+        //Debug.Log("Ready");
     }
 
     public void Cancel()
