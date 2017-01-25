@@ -82,7 +82,7 @@ public class RadialProgressMeter : MonoBehaviour
 
     public void Cancel()
     {
-        Debug.Log("Whyy");
+        //Debug.Log("Whyy");
         asleep = true;
         TextIndicator.text = "100%";
         TextLoading.text = "Done!";
