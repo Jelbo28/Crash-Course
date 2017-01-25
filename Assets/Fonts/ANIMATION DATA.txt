@@ -1,0 +1,1 @@
+FF640080 , 10 ,  FFA400FF , ~Afternoon~ , about 50 to -50 on the x axis
