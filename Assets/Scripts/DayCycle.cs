@@ -37,7 +37,7 @@ public class DayCycle : MonoBehaviour
     private Color newColor;
     private Color currColor;
     private float t = 0f;
-
+    public MonsterWave spawner;
 
     void Start()
     {
@@ -50,6 +50,9 @@ public class DayCycle : MonoBehaviour
         origDayLength = dayLength;
         //Configures light component for later use.
         sun = GetComponent<Light>();
+        spawner.GetComponent<MonsterWave>();
+
+        
     }
 
     // Update is called once per frame
@@ -77,6 +80,7 @@ public class DayCycle : MonoBehaviour
         dayLength -= Time.deltaTime;
         if (dayPeriod == 0)
         {
+            
             newColor= lightColor;
             currColor = sun.color;
             colorChange = true;
@@ -86,6 +90,7 @@ public class DayCycle : MonoBehaviour
         {
             if (dayPeriod == 1)
             {
+                
                 Debug.Log("bob");
                 newColor = twilightColor;
                 currColor = sun.color;
@@ -94,17 +99,24 @@ public class DayCycle : MonoBehaviour
             }
             if (dayLength <= nightTimer)
             {
+                
+                spawner.night = true;
+                Debug.Log(spawner.night);
                 if (dayPeriod == 2)
                 {
-                   newColor = darkColor;
+                    spawner.stop = false;
+                    newColor = darkColor;
                     currColor = sun.color;
                     colorChange = true;
                     dayPeriod++;
                 }
                 if (dayLength <= 3)
                 {
+                   
                     if (dayPeriod == 3)
                     {
+                        spawner.night = false;
+                        Debug.Log(spawner.night);
                         newColor= lightColor;
                         currColor = sun.color;
                         colorChange = true;
