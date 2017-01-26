@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class DisplayManager : MonoBehaviour {
 
-
-
+    [SerializeField]
+    GameObject timeNotify;
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+    {
+
 	}
 	
 	// Update is called once per frame
@@ -17,8 +18,15 @@ public class DisplayManager : MonoBehaviour {
 		
 	}
 
-    public void DayFade()
+    public void DayFade(int _dayPeriod)
     {
+        //switch (_dayPeriod)
+        //{
+        //    case 3:
+        //        timeNotify.GetComponent<Text>
 
+        //    default:
+        //        break;
+        //}
     }
 }
