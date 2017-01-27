@@ -23,7 +23,7 @@ public class Monster : MonoBehaviour {
             i++;
             Debug.Log(i);
         }
-        Debug.Log(GetClosestTarget(targets).name);
+        //Debug.Log(GetClosestTarget(targets).name);
 		
 	}
 	
