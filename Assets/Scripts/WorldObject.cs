@@ -25,7 +25,7 @@ public class WorldObject : MonoBehaviour
 
     void Awake()
     {
-        location = GetComponent<ClickInteract>().standLocation;
+        location = GetComponent<ClickInteract>().standLocation.transform.position;
         //Debug.Log(location);
         //SetSpriteLayer();
     }

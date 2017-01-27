@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
     //Public
     //public GameObject area;
-    public GameObject[] spawnObject;
+    public GameObject spawnObj;
     //public int MinX = 0;
     //public int MaxX = 10;
     //public int MinY = 0;
@@ -13,20 +15,24 @@ public class Spawner : MonoBehaviour
     //Private
 
 
-    void Start()
+    void Update()
     {
-
-        Debug.Log("Spawn");
-        int objectType = 0;
-        for (int i = 0; i < objectAmmount; i++)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            objectType = Mathf.RoundToInt(Random.Range(0, spawnObject.Length)); // Randomly assigns the object being spawned.
-                                                              // We could make this more seasoned by giving more or less chance to certain objects, more grass, less mushrooms, etc.
-                                                              // I also suggest making separate polygon areas for groups of the same resource like a bunch of pine trees.
-                                                              // We could do this by making children of this object, each with a polygon collider, then assign the apropriate portion according to the total ratio.                                                 
-            Instantiate(spawnObject[objectType], PointInArea(), Quaternion.identity); // Generates the object with our specified instruction.
-        }
+            Debug.Log("Bob");
+            for (int i = 0; i < objectAmmount; i++)
+            {
+                //float maxposX = Random.Range(areaX + MaxX, areaX + MinX);
+                //float minposX = Random.Range(areaX - MaxX, areaX - MinX);
+                //float maxposY = Random.Range(areaY + MaxY, areaY + MinY);
+                //float minposY = Random.Range(areaY - MaxY, areaY - MinY);
 
+                //float x = Random.Range(maxposX, minposX);
+                //float y = Random.Range(maxposY, minposY);
+                Instantiate(spawnObj, PointInArea(), Quaternion.identity);
+
+            }
+        }
     }
 
     public Vector2 PointInArea()
@@ -41,9 +47,8 @@ public class Spawner : MonoBehaviour
         {
             x = Random.Range(center.x - bounds.extents.x, center.x + bounds.extents.x);
             y = Random.Range(center.y - bounds.extents.y, center.y + bounds.extents.y);
-            attempt++;
         } while (!GetComponent<PolygonCollider2D>().OverlapPoint(new Vector2(x, y)) && attempt <= 100);
-
+        Debug.Log("Attempts: " + attempt + ", pos = (" + x + ", " + y + ")");
 
         return new Vector2(x, y);
     }

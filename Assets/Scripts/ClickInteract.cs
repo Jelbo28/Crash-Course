@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class ClickInteract : MonoBehaviour
 {
+    [SerializeField]
     GameObject player;
 
 
     private Camera cam;
     [SerializeField]
-    Vector3 distanceModifier;
-    [HideInInspector]
-    public Vector3 standLocation;
+    public GameObject standLocation;
     [SerializeField]
     bool Interactable = false;
     //[SerializeField]
@@ -21,14 +20,9 @@ public class ClickInteract : MonoBehaviour
 
     void Awake()
     {
-        if (name != "Nothing")
-        {
-            standLocation = (new Vector3(-GetComponent<SpriteRenderer>().bounds.extents.x, -GetComponent<SpriteRenderer>().bounds.extents.y, 0) + transform.position + distanceModifier);
-        }
-        player = GameObject.FindGameObjectWithTag("Player");
         // We can also avoid calculating where the bottom of the sprite is by just setting it as the pivot point.
-        //standLocation =  new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<BoxCollider2D>().bounds.extents.y, transform.position.z);
-        //standLocation = new
+       //standLocation =  new Vector3(transform.position.x, transform.position.y - gameObject.GetComponent<BoxCollider2D>().bounds.extents.y, transform.position.z);
+       //standLocation = new
     }
 
     void Start()
@@ -43,6 +37,7 @@ public class ClickInteract : MonoBehaviour
 
     void OnMouseOver()
     {
+
         GM.instance.ItemDisplay(gameObject);
 
     }
@@ -51,21 +46,12 @@ public class ClickInteract : MonoBehaviour
     {
         if (Interactable)
         {
-
-                Debug.Log("Bob");
-                player.GetComponent<PlayerController>().WalkTo(standLocation /*, radius, Destructable, gameObject */);
-            
+            player.GetComponent<PlayerController>().WalkTo(standLocation.transform.position /*, radius, Destructable, gameObject */);
         }
         else /* if (tag == "Ground") */
         {
            // Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             player.GetComponent<PlayerController>().WalkTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(standLocation, 0.1f);
     }
 }

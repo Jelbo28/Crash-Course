@@ -34,14 +34,12 @@ public class GM : MonoBehaviour
             if (thing.name != "Nothing")
             {
                 itemDisplay.text = thing.name;
-                currHighlight = thing;
             }
             else
             {
                 itemDisplay.text = " ";
-                currHighlight = null;
             }
-  
+            currHighlight = thing;
         }
         else
         {
