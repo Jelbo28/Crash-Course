@@ -12,11 +12,17 @@ public class SpaceShip : MonoBehaviour {
     private bool toggle = false;
     private bool laserToggle = false;
     private bool nearShip = false;
+    private bool returnRotation = false;
+    private Quaternion startRot;
+    private Quaternion currRot;
+    private float t = 0f;
+    private float returnTime = 1f;
 	// Use this for initialization
 	void Start ()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         laser = GameObject.FindGameObjectWithTag("Laser");
+        startRot = laser.transform.rotation;
     }
 	
 	// Update is called once per frame
@@ -37,6 +43,7 @@ public class SpaceShip : MonoBehaviour {
             toggle = false;
         }
         Laser();
+        ReturnRotation();
     }
 
     void Laser()
@@ -53,6 +60,8 @@ public class SpaceShip : MonoBehaviour {
             {
                 laser.GetComponent<ArmRotation>().enabled = false;
                 laser.GetComponentInChildren<TestManager>().enabled = false;
+                currRot = laser.transform.rotation;
+                returnRotation = true;
                 laserToggle = false;
             }
         }
@@ -60,7 +69,30 @@ public class SpaceShip : MonoBehaviour {
         {
                 laser.GetComponent<ArmRotation>().enabled = false;
                 laser.GetComponentInChildren<TestManager>().enabled = false;
-                laserToggle = false;
+            currRot = laser.transform.rotation;
+            returnRotation = true;
+            laserToggle = false;
+        }
+    }
+
+    void ReturnRotation()
+    {
+        if (laserToggle == false && returnRotation)
+        {
+            //Debug.Log("bobert");
+            //Debug.Log(startRot);
+            laser.transform.rotation = Quaternion.Lerp(currRot, startRot, Time.deltaTime);
+            if (t < 1)
+            { // while t is below the end limit...
+              // increment it at the desired rate every update:
+                t += Time.deltaTime / returnTime;
+                // Debug.Log("T = " + t);
+            }
+            else
+            {
+                t = 0;
+                returnRotation = false;
+            }
         }
     }
 

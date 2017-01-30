@@ -6,6 +6,8 @@ public class Monster : MonoBehaviour {
 
     [SerializeField]
     float speed;
+    [SerializeField]
+    float health;
 
     [SerializeField]
     List<Transform> targets;
@@ -32,6 +34,12 @@ public class Monster : MonoBehaviour {
 		
 	}
 
+    public void Damage(float ammount)
+    {
+        //Mathf.Lerp(health, health - ammount, Time.deltaTime);
+        health -= ammount;
+    }
+
     Transform GetClosestTarget(List<Transform> targets)
     {
         Transform tMin = null;
@@ -48,4 +56,13 @@ public class Monster : MonoBehaviour {
         }
         return tMin;
     }
+
+    //void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    if (other.name == "Laser")
+    //    {
+    //        Debug.Log("GOOO");
+    //        Damage(10f);
+    //    }
+    //}
 }
