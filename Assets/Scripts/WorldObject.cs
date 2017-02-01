@@ -71,4 +71,6 @@ public class WorldObject : MonoBehaviour
     {
         UnityEditor.Handles.DrawWireDisc(location, Vector3.forward, radius);
     }
+
+
 }

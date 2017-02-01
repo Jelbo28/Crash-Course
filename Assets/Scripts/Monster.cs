@@ -8,7 +8,7 @@ public class Monster : MonoBehaviour {
     float speed;
     [SerializeField]
     float health;
-
+    Animator anim;
     [SerializeField]
     List<Transform> targets;
 
@@ -17,6 +17,7 @@ public class Monster : MonoBehaviour {
     // Use this for initialization
     void Awake ()
     {
+        anim = GetComponent<Animator>();
         objs = FindObjectsOfType<Attackable>();
         int i = 0;
         foreach (Attackable item in objs)
@@ -29,15 +30,22 @@ public class Monster : MonoBehaviour {
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    void LateUpdate()
+    {
+
+        GetComponent<SpriteRenderer>().sortingOrder = (int)Camera.main.WorldToScreenPoint(GetComponent<SpriteRenderer>().bounds.min).y * -1;
+    }
 
     public void Damage(float ammount)
     {
         //Mathf.Lerp(health, health - ammount, Time.deltaTime);
         health -= ammount;
+        if (health <= 0)
+        {
+            anim.SetTrigger("Death");
+            Destroy(gameObject, 1f);
+        }
     }
 
     Transform GetClosestTarget(List<Transform> targets)
@@ -57,12 +65,14 @@ public class Monster : MonoBehaviour {
         return tMin;
     }
 
-    //void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.name == "Laser")
-    //    {
-    //        Debug.Log("GOOO");
-    //        Damage(10f);
-    //    }
-    //}
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Laser")
+        {
+            //Debug.Log("GOOO");
+            Damage(10f);
+        }
+    }
+
 }

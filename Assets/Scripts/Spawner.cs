@@ -4,6 +4,8 @@ public class Spawner : MonoBehaviour
 {
     //Public
     //public GameObject area;
+    [SerializeField]
+    Collider2D spawnColl;
     public GameObject[] spawnObject;
     //public int MinX = 0;
     //public int MaxX = 10;
@@ -31,7 +33,7 @@ public class Spawner : MonoBehaviour
 
     public Vector2 PointInArea()
     {
-        Bounds bounds = GetComponent<PolygonCollider2D>().bounds;
+        Bounds bounds = spawnColl.bounds;
         Vector2 center = bounds.center;
 
         float x = 0;
