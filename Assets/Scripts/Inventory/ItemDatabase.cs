@@ -16,7 +16,7 @@ public class ItemDatabase : MonoBehaviour {
         itemData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/Items.json"));
         ConstructItemDatabase();
 
-        Debug.Log(FetchItemByID(0).Description);
+        //Debug.Log(FetchItemByID(0).Description);
     }
 
     public Item FetchItemByID(int id)
@@ -50,6 +50,7 @@ public class Item
     public bool Stackable { get; set; }
     public int Rarity { get; set; }
     public string Slug { get; set; }
+    public Sprite Sprite { get; set; }
 
 
 
@@ -65,7 +66,7 @@ public class Item
         this.Stackable = stackable;
         this.Rarity = rarity;
         this.Slug = slug;
-
+        this.Sprite = Resources.Load<Sprite>("Sprites/Items/" + slug);
     }
 
     //public Item(int id, string title, int value)

@@ -17,7 +17,7 @@
     "id": 1,
     "title": "The Great Stick",
     "value": 543,
-          "stats": {
+    "stats": {
       "power": 56,
       "defence": 2,
       "vitality": 54
@@ -25,7 +25,35 @@
     "description": "A super cool stick!",
     "stackable": true,
     "rarity": 6,
-    "slug": "the_great_stick"
+    "slug": "handy_axe"  //"the_great_stick"
+  },
+  {
+    "id": 2,
+    "title": "Handy Axe",
+    "value": 246,
+    "stats": {
+      "power": 35,
+      "defence": 7,
+      "vitality": 10
+    },
+    "description": "Go get some wood!",
+    "stackable": false,
+    "rarity": 2,
+    "slug": "handy_axe"
+  },
+      {
+    "id": 3,
+    "title": "Evil Axe",
+    "value": 276,
+          "stats": {
+      "power": 95,
+      "defence": 10,
+      "vitality": 15
+    },
+    "description": "Go get some revenge!",
+    "stackable": false,
+    "rarity": 15,
+    "slug": "evil_axe"
   }
 
 ]
